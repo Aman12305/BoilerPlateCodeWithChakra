@@ -1,10 +1,11 @@
 import * as React from 'react'
 import { ChakraProvider } from '@chakra-ui/react'
+import AllRoutes from './Component/AllRoutes'
 
 function App() {
   return (
     <ChakraProvider>
-      
+      <AllRoutes/>
     </ChakraProvider>
   )
 }

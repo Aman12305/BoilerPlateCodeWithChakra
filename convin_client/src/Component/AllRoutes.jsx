@@ -1,8 +1,16 @@
 import React from 'react'
-import {BrowserRoute as Router,Routes,Route} from 'react-router-dom'
+import {BrowserRouter as Router,Routes,Route} from 'react-router-dom'
+import HomePage from './HomePage/HomePage'
+import Layout from './Layout'
 
 export default function AllRoutes() {
   return (
-    <div>AllRoutes</div>
+    <Router>
+      <Routes>
+        <Route path='/' element={<Layout/>}>
+          <Route index element={<HomePage/>}/>
+        </Route>
+      </Routes>
+    </Router>
   )
 }
