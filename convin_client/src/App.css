@@ -24,6 +24,12 @@
   color: white;
 }
 
+.chakra_color{
+  color:white  !important;
+  background-image:linear-gradient(to left, #bb7ff8, #FF0080) !important;
+}
+
+
 .App-link {
   color: #61dafb;
 }

@@ -8,8 +8,8 @@ export default function Layout() {
   return (
     <Box>
         <Navbar/>
-        <Box minH='80vh'>
-            <Box h='60px'></Box>
+        <Box minH='90vh'>
+            <Box h='65px'></Box>
             <Outlet/>
         </Box>
         <Footer/>
