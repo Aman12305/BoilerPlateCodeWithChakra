@@ -1,12 +1,13 @@
 import React,{useEffect, useState} from 'react'
-import {BrowserRouter as Router,Routes,Route} from 'react-router-dom'
+import {BrowserRouter as Router,Routes,Route, useLocation, useParams} from 'react-router-dom'
 import HomePage from './HomePage/HomePage'
 import Layout from './Layout'
 import VideoPlayer from './Video/VideoPlayer';
 
 export default function AllRoutes() {
   const [bucket, setBucket] = useState([]);
-
+  const [history,setHistory] = useState([]);
+  const location = useLocation();
   useEffect(()=>{
     const newBucket = [{
       bucketName: "Education",
@@ -20,14 +21,30 @@ export default function AllRoutes() {
     setBucket([...newBucket]);
   },[])
 
+  useEffect(()=>{
+    
+    if(location.pathname!=='/')
+    {
+      const videoIndex = parseInt(location.pathname.slice(7)) - 1
+      const bucketName = bucket[parseInt(videoIndex/1000)].bucketVideo[parseInt(videoIndex%1000)]?.videoTitle
+
+      // Remove any existing entry with the same pathname value
+      const filteredHistory = history.filter(item => item.pathname !== location.pathname);
+
+      // Add the new entry at the top
+      const newHistory = [{pathname: location.pathname, videoTitle: bucketName}, ...filteredHistory];
+
+      setHistory(newHistory);
+    }
+
+  },[location.pathname]);
+
   return (
-    <Router>
-      <Routes>
-        <Route path='/' element={<Layout/>}>
-          <Route index element={<HomePage bucket={bucket} setBucket={setBucket}/>}/>
-          <Route path='/video/:id' element={<VideoPlayer bucket={bucket}/>}/>
-        </Route>
-      </Routes>
-    </Router>
+    <Routes>
+      <Route path='/' element={<Layout/>}>
+        <Route index element={<HomePage bucket={bucket} setBucket={setBucket} history={history}/>}/>
+        <Route path='/video/:id' element={<VideoPlayer bucket={bucket}/>}/>
+      </Route>
+    </Routes>
   )
 }

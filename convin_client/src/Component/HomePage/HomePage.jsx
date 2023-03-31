@@ -1,15 +1,17 @@
-import React, { useState,useEffect } from 'react'
-import { Box ,ButtonGroup,Button} from '@chakra-ui/react'
+import React, { useState} from 'react'
+import { Box ,ButtonGroup,Button,Heading,Text,Card} from '@chakra-ui/react'
 import Row from '../Row/Row';
 import {AiOutlinePlus,AiOutlineDelete} from 'react-icons/ai'
 import UserModal from '../UserModal/UserModal';
 import Form from '../Form/Form';
 import {MdDriveFileMoveOutline} from 'react-icons/md'
+import { useNavigate } from 'react-router-dom';
+import './HomePage.css'
 
-export default function HomePage({bucket,setBucket}) {
+export default function HomePage({bucket,setBucket,history}) {
 
   const [isModalOpen,setModalOpen] = useState(false);
-  const [modalTitle,setModalTitle] = useState('')
+  const [modalTitle,setModalTitle] = useState('');
 
   const handleAddBucket = (bucketName) => {
     const newBucket = {
@@ -87,6 +89,8 @@ export default function HomePage({bucket,setBucket}) {
     setModalOpen(true);
   }
 
+  const navigate = useNavigate();
+
   return (
     <Box display='flex' flexDirection='column' mt='50px'>
       <Box>
@@ -112,6 +116,22 @@ export default function HomePage({bucket,setBucket}) {
       <UserModal isOpen={isModalOpen} onClose={()=>setModalOpen(false)} title={modalTitle}>
         <Form formType={modalTitle} bucket={bucket} onSubmit={modalTitle==='Add Bucket'?handleAddBucket:(modalTitle==='Remove Buckets'?handleRemoveBucket:handleMoveBucket)}/>
       </UserModal>
+      <Box p='10px' m='10px'>
+        <Heading>Your Library:</Heading>
+        <Text>Your History:</Text>
+        <Box mx='auto' my='40px' p='20px' borderRadius='10px' w='70%' maxW='500px' minW='280px' border='1px solid #F0F0F0' textAlign='center'>
+            {
+              history.length===0?
+              <Text>You doesn't have any history yet</Text>:
+              history.map((item,index)=>(
+                <Card key={index} onClick={()=>navigate(item.pathname)} my='8px' className='history_card'>
+                    <Text>{item.videoTitle}</Text>
+                </Card>
+              ))
+            }
+
+        </Box>
+      </Box>
     </Box>
   )
 }
